@@ -59,7 +59,7 @@ public:
 		m_cadrolizerRep.setValue("hostname", string(hostname));
                 return m_cadrolizerRep;
         }
-	
+
 	OCStackResult handleGet(shared_ptr<OCResourceRequest> pRequest);
 	OCEntityHandlerResult entityHandler(shared_ptr<OCResourceRequest> request);
 };
