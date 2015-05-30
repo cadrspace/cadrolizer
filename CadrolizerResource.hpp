@@ -29,7 +29,8 @@ public:
 
 		string resourceInterface = DEFAULT_INTERFACE;
 		uint8_t resourceProperty = OC_DISCOVERABLE | OC_OBSERVABLE;
-		EntityHandler cb = bind(&CadrolizerResource::entityHandler,  this, PH::_1);
+		EntityHandler cb = bind(&CadrolizerResource::entityHandler,
+                                        this, PH::_1);
 		OCStackResult result = OCPlatform::registerResource(
 			m_cadrolizerHandle,
 			m_cadrolizerUri,
