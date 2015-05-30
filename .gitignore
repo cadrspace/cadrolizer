@@ -1,0 +1,12 @@
+# Auxiliary files
+.sconsign.dblite
+
+# Object files
+*.o
+
+# Temporary files
+*\~
+
+# Binary files
+cz
+cadrolizer
