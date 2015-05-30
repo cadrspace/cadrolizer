@@ -53,6 +53,34 @@ public:
         }
 
         /**
+         * Get the current machine uptime.
+         */
+        time_t getUptime() {
+                double upsecs;
+                time_t uptime;
+                FILE *fp = fopen("/proc/uptime", "r");
+                if (fp != NULL)
+                {
+                        char buf[BUFSIZ];
+                        int res;
+                        char *b = fgets(buf, BUFSIZ, fp);
+                        if (b == buf)
+                        {
+                                /* The following sscanf must use the C locale/ */
+                                setlocale(LC_NUMERIC, "C");
+                                res = sscanf(buf, "%lf", &upsecs);
+                                setlocale(LC_NUMERIC, "");
+                                if (res == 1)
+                                        uptime = (time_t) upsecs;
+                        }
+
+                        fclose (fp);
+                }
+
+                return uptime;
+        }
+
+        /**
          * Get the current hostname.  Return the hostname as a
          * string.
          */
@@ -69,7 +97,9 @@ public:
 
         OCRepresentation get() {
                 string hostname = getHostname();
+                string uptime   = to_string(getUptime());
 		m_cadrolizerRep.setValue("hostname", string(hostname));
+                m_cadrolizerRep.setValue("uptime",   uptime);
                 return m_cadrolizerRep;
         }
 

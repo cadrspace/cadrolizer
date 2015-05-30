@@ -27,6 +27,16 @@ void stop()
 	cv.wait(lock);
 }
 
+/**
+ * Get the uptime of a machine.  Return the uptime value (in days) as
+ * a string.
+ */
+string getUptime(const OCRepresentation &rep)
+{
+        double uptime = atof(rep.getValue<string>("uptime").c_str());
+        return to_string(uptime / 60 / 60 / 24);
+}
+
 /* Print information about the found resource. */
 void onGet(const HeaderOptions     &headerOptions,
            const OCRepresentation  &rep,
@@ -46,6 +56,11 @@ void onGet(const HeaderOptions     &headerOptions,
 		cout << "Hostname: " << rep.getValue<string>("hostname")
 		     << endl;
 	}
+
+        if (rep.hasAttribute("uptime")) {
+                cout << "Uptime:   " << getUptime(rep) << " day(s)"
+                     << endl;
+        }
 }
 
 void foundResource(shared_ptr<OCResource> resource)
