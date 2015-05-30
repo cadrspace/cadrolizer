@@ -52,10 +52,23 @@ public:
                 return m_cadrolizerHandle;
         }
 
+        /**
+         * Get the current hostname.  Return the hostname as a
+         * string.
+         */
+        string getHostname() {
+                const size_t HOSTNAME_SZ = 255;
+		char  hostname[HOSTNAME_SZ];
+
+                int res = gethostname(hostname, HOSTNAME_SZ);
+                if (res != 0)
+                        throw "Could not get the hostname";
+
+                return string(hostname);
+        }
+
         OCRepresentation get() {
-		char  hostname[20];
-		size_t hostnameLen = 20;
-		int res = gethostname(hostname, hostnameLen);
+                string hostname = getHostname();
 		m_cadrolizerRep.setValue("hostname", string(hostname));
                 return m_cadrolizerRep;
         }
