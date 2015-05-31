@@ -86,15 +86,6 @@ void read_settings(po::options_description& desc,
 }
 
 
-void printHelp()
-{
-	cout << "Usage: " << PROGRAM_NAME << " [options]" << endl
-	     << endl
-             << "Options:" << endl
-             << "  -d         Enable debug mode." << endl
-             << "  -h         Print this message and exit." << endl;
-}
-
 // Entry point
 int main(int argc, char* argv[])
 {
