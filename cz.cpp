@@ -53,12 +53,20 @@ void onGet(const HeaderOptions     &headerOptions,
         }
 
 	if (rep.hasAttribute("hostname")) {
-		cout << "Hostname: " << rep.getValue<string>("hostname")
+		cout << "Hostname:     "
+                     << rep.getValue<string>("hostname")
 		     << endl;
 	}
 
         if (rep.hasAttribute("uptime")) {
-                cout << "Uptime:   " << getUptime(rep) << " day(s)"
+                cout << "Uptime:       "
+                     << getUptime(rep) << " day(s)"
+                     << endl;
+        }
+
+        if (rep.hasAttribute("ip-address")) {
+                cout << "IP Address:   "
+                     << rep.getValue<string>("ip-address")
                      << endl;
         }
 }

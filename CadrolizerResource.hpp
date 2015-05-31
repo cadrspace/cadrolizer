@@ -1,3 +1,13 @@
+#include <sys/types.h>
+#include <ifaddrs.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <arpa/inet.h>
+
+#include <sstream>
+#include <string>
+#include <iostream>
+
 #include "OCPlatform.h"
 #include "OCApi.h"
 
@@ -96,11 +106,58 @@ public:
                 return string(hostname);
         }
 
+        /**
+         * Get current IP addresses for each interface of the machine.
+         *
+         * @return Comma-separated list of interfaces with their IP
+         * addresses as a string.
+         */
+        string getIpAddress() {
+                struct ifaddrs* ifAddrsStruct = NULL;
+                struct ifaddrs* ifa = NULL;
+                ostringstream os;
+                auto ifaToStr = [](struct ifaddrs* ifa,
+                                   int             type,
+                                   int             len) -> string {
+                        void* tmpAddrPtr = NULL;
+                        struct sockaddr_in* saddr
+                                = (struct sockaddr_in*) ifa->ifa_addr;
+                        char addrBuf[len];
+                        tmpAddrPtr = &(saddr)->sin_addr;
+                        inet_ntop(type, tmpAddrPtr, addrBuf, len);
+                        return string(addrBuf);
+                };
+
+                getifaddrs(&ifAddrsStruct);
+
+                for (ifa = ifAddrsStruct; ifa != NULL; ifa = ifa->ifa_next) {
+                        if (! ifa->ifa_addr)
+                                continue;
+
+                        if (ifa->ifa_addr->sa_family == AF_INET) {
+                                os << ifa->ifa_name << ":"
+                                   << ifaToStr(ifa, AF_INET, INET_ADDRSTRLEN);
+                                if (ifa->ifa_next)
+                                        os << ",";
+                        } else if (ifa->ifa_addr->sa_family == AF_INET6) {
+                                os << ifa->ifa_name << ":"
+                                   << ifaToStr(ifa, AF_INET6, INET6_ADDRSTRLEN);
+                                if (ifa->ifa_next)
+                                        os << ",";
+                        }
+
+                }
+
+                return os.str();
+        }
+
         OCRepresentation get() {
                 string hostname = getHostname();
                 string uptime   = to_string(getUptime());
-		m_cadrolizerRep.setValue("hostname", string(hostname));
-                m_cadrolizerRep.setValue("uptime",   uptime);
+                string ipaddr   = getIpAddress();
+                m_cadrolizerRep.setValue("hostname",   string(hostname));
+                m_cadrolizerRep.setValue("uptime",     uptime);
+                m_cadrolizerRep.setValue("ip-address", ipaddr);
                 return m_cadrolizerRep;
         }
 
