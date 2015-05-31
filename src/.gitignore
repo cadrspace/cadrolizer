@@ -2,5 +2,5 @@
 *.o
 
 # Binary files
-cz
 cadrolizer
+cadrolizer-manager
