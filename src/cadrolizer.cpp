@@ -85,7 +85,7 @@ void read_settings(po::options_description& desc,
         po::notify(vm);
 }
 
-void cadrolize()
+void cadrolize(string& services, string& description)
 {
         try {
                 CadrolizerResource *cz = CadrolizerResource::getInstance();
@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
         }
 
         if (vm.count("cadrolize")) {
-                cadrolize();
+                cadrolize(services, description);
         }
 }
 
