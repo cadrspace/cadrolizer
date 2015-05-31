@@ -26,10 +26,15 @@
 #include "OCPlatform.h"
 #include "OCApi.h"
 
+// This header should be included after IoTivity headers, otherwise the
+// program won't compile.
+#include <boost/program_options.hpp>
+
 #include "common.hpp"
 
 using namespace std;
 using namespace OC;
+namespace po = boost::program_options;
 
 const int SUCCESS_RESPONSE = 0;
 const string PROGRAM_NAME = "cz";
@@ -159,16 +164,6 @@ void foundResource(shared_ptr<OCResource> resource)
         resource->get(test, &onGet);
 }
 
-void printHelp()
-{
-        cout << "Usage: " << PROGRAM_NAME << " [options]" << endl
-             << endl
-             << "Options:" << endl
-	     << "  -l         List cadrolizers." << endl
-	     << "  -d         Enable debug mode." << endl
-             << "  -h         Print this message and exit." << endl;
-}
-
 /* List cadrolizers. */
 void list() {
 	try {
@@ -187,31 +182,37 @@ void list() {
 /* Entry point */
 int main(int argc, char* argv[])
 {
-	int opt;
+        po::options_description desc("Options");
+        desc.add_options()
+                ("help,h", "Display this help message")
+                ("locate,l", "Locate cadrolizers around.")
+                ("debug", "Enable debug mode");
 
-        PlatformConfig cfg {
-                ServiceType::InProc,
-                ModeType::Client,
-                "0.0.0.0",
-                0,
-                QualityOfService::LowQos
-        };
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        po::notify(vm);
 
-        OCPlatform::Configure(cfg);
+        if (vm.count("help")) {
+                cout << desc << endl;
+                exit(0);
+        }
 
-        while ((opt = getopt(argc, argv, "dhl")) > 0) {
-                switch (opt) {
-		case 'l':
-			list();
-			break;
-                case 'd':
-                        debug = true;
-                        break;
-                case 'h':
-                        printHelp();
-                        exit (0);
-                        break;  // Never reached
+        if (vm.count("debug")) {
+                debug = true;
+        }
+
+        if (vm.count("locate")) {
+                PlatformConfig cfg {
+                        ServiceType::InProc,
+                        ModeType::Client,
+                        "0.0.0.0",
+                        0,
+                        QualityOfService::LowQos
                 };
+
+                OCPlatform::Configure(cfg);
+
+                list();
         }
 
         return 0;
