@@ -1,3 +1,6 @@
+#ifndef __CADROLIZER_RESOURCE_HPP__
+#define __CADROLIZER_RESOURCE_HPP__
+
 #include "OCPlatform.h"
 #include "OCApi.h"
 #include "os.hpp"
@@ -68,4 +71,7 @@ public:
 	OCEntityHandlerResult entityHandler(shared_ptr<OCResourceRequest> request);
 };
 
+#endif /* ifndef __CADROLIZER_RESOURCE_HPP__ */
+
 // HackThing.hpp ends here
+
