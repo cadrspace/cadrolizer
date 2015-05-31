@@ -1,1 +1,1 @@
-SConscript('src/SConstruct')
+SConscript('src/SConscript')
