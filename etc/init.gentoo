@@ -1,0 +1,43 @@
+#!/sbin/runscript
+# Copyright (C) Artyom V. Poptsov <poptsov.artyom@gmail.com>
+# Distributed under the terms of the GNU General Public License v3, or later
+
+CADROLIZER=/usr/local/bin/cadrolizer
+CADROLIZER_OPS=--cadrolize
+USER=${RC_SVCNAME##*.}
+PIDFILE_DIR=/var/run/cadrolizer/${USER}
+PIDFILE=${PIDFILE_DIR}/cadrolizer.pid
+
+depend() {
+	need net logger
+}
+
+checkconfig() {
+	if [ "${USER}" = "${RC_SVCNAME}" ]; then
+		eerror "You have to create an init script for each user:"
+		eerror "ln -s cadrolizer /etc/init.d/cadrolizer.<user>"
+		return 1
+	fi
+
+	checkpath -d --owner 0 --mode 0755 "${PIDFILE_DIR%/*}"
+	checkpath -d --owner "${USER}" --mode 0755 "${PIDFILE_DIR}"
+}
+
+start() {
+	local home
+	checkconfig || return 1
+
+	eval home="~${USER}"
+
+	ebegin "Starting the cadrolizer for user ${USER}"
+	start-stop-daemon --start \
+		--user "${USER}" --pidfile "${PIDFILE}" --chdir "${home}" \
+		--exec "${CADROLIZER}" -- ${CADROLIZER_OPS}
+	eend $?
+}
+
+stop() {
+	start-stop-daemon --stop \
+		--user "${USER}" --pidfile "${PIDFILE}" \
+		--exec "${CADROLIZER}"
+}

@@ -1,0 +1,4 @@
+env = Environment();
+
+env.InstallAs(target = '/etc/init.d/cadrolizer', source = 'init.gentoo')
+env.Alias('install', '/etc/init.d/cadrolizer')
