@@ -103,11 +103,19 @@ int main(int argc, char* argv[])
         po::options_description desc("Options");
 
         desc.add_options()
+                ("help,h", "Display this help message")
                 ("services", po::value<string>(&services), "services")
                 ("description", po::value<string>(&description), "description");
 
         po::variables_map vm;
         read_settings(desc, vm);
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+        po::notify(vm);
+
+        if (vm.count("help")) {
+                cout << desc << endl;
+                exit(0);
+        }
 
 	try {
 		CadrolizerResource *cz = CadrolizerResource::getInstance();
