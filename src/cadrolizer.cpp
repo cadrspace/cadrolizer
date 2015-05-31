@@ -109,8 +109,6 @@ int main(int argc, char* argv[])
         po::variables_map vm;
         read_settings(desc, vm);
 
-        cout << services << endl;
-
 	try {
 		CadrolizerResource *cz = CadrolizerResource::getInstance();
                 cz->setServices(services);
