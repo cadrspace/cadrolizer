@@ -79,10 +79,12 @@ void printHelp()
 int main(int argc, char* argv[])
 {
         string services;
+        string description;
         po::options_description desc("Options");
 
         desc.add_options()
-                ("services", po::value<string>(&services), "services");
+                ("services", po::value<string>(&services), "services")
+                ("description", po::value<string>(&description), "description");
 
         po::variables_map vm;
         read_settings(desc, vm);
@@ -92,6 +94,7 @@ int main(int argc, char* argv[])
 	try {
 		CadrolizerResource *cz = CadrolizerResource::getInstance();
                 cz->setServices(services);
+                cz->setDescription(description);
 
 		stop();
 	} catch (OCException e) {

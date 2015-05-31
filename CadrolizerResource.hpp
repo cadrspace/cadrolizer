@@ -18,6 +18,7 @@ public:
 
 	string m_machineName;
         string m_services;
+        string m_description;
 
 	// IoTivity-specific:
 	OCRepresentation m_cadrolizerRep;
@@ -61,6 +62,13 @@ public:
                 m_services = services;
         }
 
+        /**
+         * Set the description.
+         */
+        void setDescription(const string& description) {
+                m_description = description;
+        }
+
         OCResourceHandle getHandle() {
                 return m_cadrolizerHandle;
         }
@@ -69,10 +77,11 @@ public:
                 string hostname = OS::getHostname();
                 string uptime   = to_string(OS::getUptime());
                 string ipaddr   = OS::getIpAddress();
-                m_cadrolizerRep.setValue("hostname",   string(hostname));
-                m_cadrolizerRep.setValue("uptime",     uptime);
-                m_cadrolizerRep.setValue("ip-address", ipaddr);
-                m_cadrolizerRep.setValue("services",   m_services);
+                m_cadrolizerRep.setValue("hostname",    string(hostname));
+                m_cadrolizerRep.setValue("description", m_description);
+                m_cadrolizerRep.setValue("uptime",      uptime);
+                m_cadrolizerRep.setValue("ip-address",  ipaddr);
+                m_cadrolizerRep.setValue("services",    m_services);
                 return m_cadrolizerRep;
         }
 
