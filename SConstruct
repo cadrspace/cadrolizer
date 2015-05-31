@@ -17,5 +17,6 @@ env.Prepend(LIBPATH = [ '/home/avp/src/dist/iotivity-0.9.0/resource/release/obj'
 ])
 env.Append(LIBS = ['oc', 'octbstack', 'oc_logger', '-lpthread'])
 
-cadrolizer = env.Program('cadrolizer', [ 'cadrolizer.cpp', 'CadrolizerResource.cpp'])
+cadrolizer = env.Program('cadrolizer', [ 'cadrolizer.cpp', 'CadrolizerResource.cpp',
+                                         'os.cpp' ])
 cz         = env.Program('cz', 'cz.cpp')
