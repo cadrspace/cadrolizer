@@ -21,5 +21,5 @@ cadrolizer = env.Program('cadrolizer', [ 'cadrolizer.cpp', 'CadrolizerResource.c
                                          'os.cpp' ])
 cz         = env.Program('cz', 'cz.cpp')
 
-env.Install('/usr/bin', [cadrolizer, cz])
-env.Alias('install', '/usr/bin')
+env.Install('/usr/local/bin', [cadrolizer, cz])
+env.Alias('install', '/usr/local/bin')
