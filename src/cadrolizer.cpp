@@ -125,6 +125,8 @@ int main(int argc, char* argv[])
         if (vm.count("cadrolize")) {
                 cadrolize(services, description);
         }
+
+        return 0;
 }
 
 /* cadrolizer.cpp ends here. */
