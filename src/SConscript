@@ -19,7 +19,7 @@ env.Append(LIBS = ['oc', 'octbstack', 'oc_logger', '-lpthread', 'boost_program_o
 
 cadrolizer = env.Program('cadrolizer', [ 'cadrolizer.cpp', 'CadrolizerResource.cpp',
                                          'os.cpp' ])
-cz         = env.Program('cz', 'cz.cpp')
+cm = env.Program('cadrolizer-manager', 'cadrolizer-manager.cpp')
 
-env.Install('/usr/local/bin', [cadrolizer, cz])
+env.Install('/usr/local/bin', [cadrolizer, cm])
 env.Alias('install', '/usr/local/bin')
