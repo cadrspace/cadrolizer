@@ -22,6 +22,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <syslog.h>
+#include <sys/stat.h>
 
 #include "OCPlatform.h"
 #include "OCApi.h"
@@ -87,6 +89,35 @@ void read_settings(po::options_description& desc,
 
 void cadrolize(string& services, string& description)
 {
+        pid_t sid;
+        pid_t pid = fork();
+
+        if (pid < 0) {
+                exit(1);
+        } else if (pid > 0) {
+                exit(0);
+        }
+
+        umask(0);
+
+        openlog(PROGRAM_NAME.c_str(), LOG_NOWAIT | LOG_PID, LOG_USER);
+        syslog(LOG_NOTICE, "Daemon started.\n");
+
+        sid = setsid();
+        if (sid < 0) {
+                syslog(LOG_ERR, "Could not create process group.\n");
+                exit(1);
+        }
+
+        if (chdir("/") < 0) {
+                syslog(LOG_ERR, "Could not change working directory.\n");
+                exit(1);
+        }
+
+        close(STDIN_FILENO);
+        close(STDOUT_FILENO);
+        close(STDERR_FILENO);
+
         try {
                 CadrolizerResource *cz = CadrolizerResource::getInstance();
                 cz->setServices(services);
