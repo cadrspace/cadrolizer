@@ -17,6 +17,7 @@ public:
 	string m_cadrolizerUri;
 
 	string m_machineName;
+        string m_services;
 
 	// IoTivity-specific:
 	OCRepresentation m_cadrolizerRep;
@@ -53,6 +54,13 @@ public:
                 return instance;
         }
 
+        /**
+         * Set services.
+         */
+        void setServices(const string& services) {
+                m_services = services;
+        }
+
         OCResourceHandle getHandle() {
                 return m_cadrolizerHandle;
         }
@@ -64,6 +72,7 @@ public:
                 m_cadrolizerRep.setValue("hostname",   string(hostname));
                 m_cadrolizerRep.setValue("uptime",     uptime);
                 m_cadrolizerRep.setValue("ip-address", ipaddr);
+                m_cadrolizerRep.setValue("services",   m_services);
                 return m_cadrolizerRep;
         }
 

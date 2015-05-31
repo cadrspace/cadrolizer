@@ -15,7 +15,7 @@ env.Prepend(LIBPATH = [ '/home/avp/src/dist/iotivity-0.9.0/resource/release/obj'
                         '/home/avp/src/dist/iotivity-0.9.0/resource/csdk/linux/release',
                         '/home/avp/src/dist/iotivity-0.9.0/resource/oc_logger/lib'
 ])
-env.Append(LIBS = ['oc', 'octbstack', 'oc_logger', '-lpthread'])
+env.Append(LIBS = ['oc', 'octbstack', 'oc_logger', '-lpthread', 'boost_program_options'])
 
 cadrolizer = env.Program('cadrolizer', [ 'cadrolizer.cpp', 'CadrolizerResource.cpp',
                                          'os.cpp' ])

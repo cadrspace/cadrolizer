@@ -37,11 +37,28 @@ string getUptime(const OCRepresentation &rep)
         return to_string(uptime / 60 / 60 / 24);
 }
 
+void replaceAll(std::string&  str,
+                const string& from,
+                const string& to)
+{
+        if (from.empty())
+                return;
+
+        size_t start_pos = 0;
+        while ((start_pos = str.find(from, start_pos)) != string::npos) {
+                str.replace(start_pos, from.length(), to);
+                // In case 'to' contains 'from', like replacing 'x' with 'yx'
+                start_pos += to.length();
+        }
+}
+
 /* Print information about the found resource. */
 void onGet(const HeaderOptions     &headerOptions,
            const OCRepresentation  &rep,
            const int               eCode)
 {
+        string hostname;
+
 	DEBUG("onGet: Called\n");
         if (! (eCode == SUCCESS_RESPONSE))
                 return;
@@ -53,8 +70,9 @@ void onGet(const HeaderOptions     &headerOptions,
         }
 
 	if (rep.hasAttribute("hostname")) {
+                hostname = rep.getValue<string>("hostname");
 		cout << "Hostname:     "
-                     << rep.getValue<string>("hostname")
+                     << hostname
 		     << endl;
 	}
 
@@ -67,6 +85,15 @@ void onGet(const HeaderOptions     &headerOptions,
         if (rep.hasAttribute("ip-address")) {
                 cout << "IP Address:   "
                      << rep.getValue<string>("ip-address")
+                     << endl;
+        }
+
+        if (rep.hasAttribute("services")) {
+                string services = rep.getValue<string>("services");
+                if (rep.hasAttribute("hostname"))
+                        replaceAll(services, "<host>", hostname);
+                cout << "Services:     "
+                     << services
                      << endl;
         }
 }
