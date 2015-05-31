@@ -85,6 +85,19 @@ void read_settings(po::options_description& desc,
         po::notify(vm);
 }
 
+void cadrolize()
+{
+        try {
+                CadrolizerResource *cz = CadrolizerResource::getInstance();
+                cz->setServices(services);
+                cz->setDescription(description);
+
+                stop();
+        } catch (OCException e) {
+                // TODO: Handle errors
+        }
+}
+
 
 // Entry point
 int main(int argc, char* argv[])
@@ -110,16 +123,7 @@ int main(int argc, char* argv[])
         }
 
         if (vm.count("cadrolize")) {
-                try {
-                        CadrolizerResource *cz
-                                = CadrolizerResource::getInstance();
-                        cz->setServices(services);
-                        cz->setDescription(description);
-
-                        stop();
-                } catch (OCException e) {
-                        // TODO: Handle errors
-                }
+                cadrolize();
         }
 }
 
