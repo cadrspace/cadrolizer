@@ -95,6 +95,7 @@ int main(int argc, char* argv[])
 
         desc.add_options()
                 ("help,h", "Display this help message")
+                ("cadrolize,z", "Cadrolize the current host")
                 ("services", po::value<string>(&services), "services")
                 ("description", po::value<string>(&description), "description");
 
@@ -108,15 +109,18 @@ int main(int argc, char* argv[])
                 exit(0);
         }
 
-	try {
-		CadrolizerResource *cz = CadrolizerResource::getInstance();
-                cz->setServices(services);
-                cz->setDescription(description);
+        if (vm.count("cadrolize")) {
+                try {
+                        CadrolizerResource *cz
+                                = CadrolizerResource::getInstance();
+                        cz->setServices(services);
+                        cz->setDescription(description);
 
-		stop();
-	} catch (OCException e) {
-		// TODO: Handle errors
-	}
+                        stop();
+                } catch (OCException e) {
+                        // TODO: Handle errors
+                }
+        }
 }
 
 /* cadrolizer.cpp ends here. */
