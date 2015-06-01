@@ -8,6 +8,17 @@
    - Boost 1.55
    - scons
 
+** Building and installation
+   The project can be built using =scons= tool:
+#+BEGIN_EXAMPLE
+$ scons
+#+END_EXAMPLE
+
+   Installation can be done as follows:
+#+BEGIN_EXAMPLE
+$ scons install
+#+END_EXAMPLE
+
 ** Configuration
    The configuration is stored in =/etc/cadrolizer.conf=.
 
