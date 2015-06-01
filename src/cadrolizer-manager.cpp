@@ -69,9 +69,9 @@ string getUptime(const OCRepresentation &rep)
  * @param from A string that should be replaced.
  * @param to A string for substitution.
  */
-void replaceAll(std::string&  str,
-                const string& from,
-                const string& to)
+void replace_all_x(std::string&  str,
+                   const string& from,
+                   const string& to)
 {
         if (from.empty())
                 return;
@@ -129,7 +129,7 @@ void onGet(const HeaderOptions     &headerOptions,
         if (rep.hasAttribute("services")) {
                 string services = rep.getValue<string>("services");
                 if (rep.hasAttribute("hostname"))
-                        replaceAll(services, "<host>", hostname);
+                        replace_all_x(services, "<host>", hostname);
                 cout << "Services:     "
                      << services
                      << endl;
