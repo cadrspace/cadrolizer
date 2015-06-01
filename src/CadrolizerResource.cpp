@@ -42,12 +42,32 @@ OCStackResult CadrolizerResource::handleGet(shared_ptr<OCResourceRequest> pReque
 	return OCPlatform::sendResponse(pResponse);
 }
 
+OCStackResult CadrolizerResource::handlePut(shared_ptr<OCResourceRequest> pRequest)
+{
+        auto pResponse = make_shared<OCResourceResponse>();
+        OCRepresentation rep = pRequest->getResourceRepresentation();
+
+        this->put(rep);
+
+        pResponse->setErrorCode(200);
+        pResponse->setResponseResult(OC_EH_OK);
+        pResponse->setResourceRepresentation(this->get());
+
+        return OCPlatform::sendResponse(pResponse);
+}
+
 OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceRequest> request) {
 	OCEntityHandlerResult ehResult = OC_EH_ERROR;
 	int requestFlag = request->getRequestHandlerFlag();
+        string requestType = request->getRequestType();
 	if (requestFlag & RequestHandlerFlag::RequestFlag) {
-		if (handleGet(request) == OC_STACK_OK)
-			ehResult = OC_EH_OK;
+                if (requestType == "GET") {
+                        if (handleGet(request) == OC_STACK_OK)
+                                ehResult = OC_EH_OK;
+                } else if (requestType == "PUT") {
+                        if (handlePut(request) == OC_STACK_OK)
+                                ehResult = OC_EH_OK;
+                }
 	}
 	return ehResult;
 }

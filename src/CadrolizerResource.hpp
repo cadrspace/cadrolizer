@@ -21,6 +21,10 @@
 #ifndef __CADROLIZER_RESOURCE_HPP__
 #define __CADROLIZER_RESOURCE_HPP__
 
+#include <sstream>
+#include <iostream>
+#include <syslog.h>
+
 #include "OCPlatform.h"
 #include "OCApi.h"
 #include "os.hpp"
@@ -93,6 +97,24 @@ public:
                 return m_cadrolizerHandle;
         }
 
+        /**
+         * Handle a PUT request.
+         *
+         * @param rep A resource representation.
+         */
+        void put(OCRepresentation& rep) {
+                string state;
+                try {
+                        if (rep.getValue("state", state)) {
+                                ostringstream os;
+                                os << "State: " << state << endl;
+                                syslog(LOG_INFO, os.str().c_str());
+                        }
+                } catch (exception& e) {
+                        cout << e.what() << endl;
+                }
+        }
+
         OCRepresentation get() {
                 string hostname = OS::getHostname();
                 string uptime   = to_string(OS::getUptime());
@@ -106,6 +128,7 @@ public:
         }
 
 	OCStackResult handleGet(shared_ptr<OCResourceRequest> pRequest);
+        OCStackResult handlePut(shared_ptr<OCResourceRequest> pRequest);
 	OCEntityHandlerResult entityHandler(shared_ptr<OCResourceRequest> request);
 };
 
