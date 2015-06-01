@@ -62,6 +62,13 @@ string getUptime(const OCRepresentation &rep)
         return to_string(uptime / 60 / 60 / 24);
 }
 
+/**
+ * Replace all occurences of a string.
+ *
+ * @param str A string in which occurences should be replaced.
+ * @param from A string that should be replaced.
+ * @param to A string for substitution.
+ */
 void replaceAll(std::string&  str,
                 const string& from,
                 const string& to)
