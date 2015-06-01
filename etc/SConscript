@@ -1,4 +1,11 @@
+import platform
+
 env = Environment();
 
-env.InstallAs(target = '/etc/init.d/cadrolizer', source = 'init.gentoo')
+if platform.dist()[0] == 'gentoo':
+    init_source = 'init.gentoo'
+else:
+    init_source = 'init.debian'
+
+env.InstallAs(target = '/etc/init.d/cadrolizer', source = init_source)
 env.Alias('install', '/etc/init.d/cadrolizer')
