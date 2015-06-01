@@ -171,8 +171,8 @@ void foundResource(shared_ptr<OCResource> resource)
         resource->get(test, &onGet);
 }
 
-/* List cadrolizers. */
-void list() {
+/* Locate cadrolizers. */
+void locate() {
 	try {
 		OCPlatform::findResource(
 			"",
@@ -219,7 +219,7 @@ int main(int argc, char* argv[])
 
                 OCPlatform::Configure(cfg);
 
-                list();
+                locate();
         }
 
         return 0;
