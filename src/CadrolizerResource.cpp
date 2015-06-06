@@ -51,7 +51,7 @@ OCStackResult CadrolizerResource::handlePut(shared_ptr<OCResourceRequest> pReque
 
         pResponse->setErrorCode(200);
         pResponse->setResponseResult(OC_EH_OK);
-        pResponse->setResourceRepresentation(this->put());
+        pResponse->setResourceRepresentation(this->get());
 
         return OCPlatform::sendResponse(pResponse);
 }
