@@ -43,6 +43,7 @@ public:
 	string m_machineName;
         string m_services;
         string m_description;
+        bool m_isShutdownAllowed;
 
 	// IoTivity-specific:
 	OCRepresentation m_cadrolizerRep;
@@ -52,7 +53,8 @@ public:
 	CadrolizerResource()
 		: m_name("cadrolizer"),
 		  m_typeName("core.cadrolizer"),
-		  m_cadrolizerUri("/a/cadrolizer") {
+		  m_cadrolizerUri("/a/cadrolizer"),
+                  m_isShutdownAllowed(false) {
 		m_cadrolizerRep.setUri(m_cadrolizerUri);
 		m_cadrolizerRep.setValue("name", m_name);
 		m_cadrolizerRep.setValue("hostname", "test");
@@ -91,6 +93,13 @@ public:
          */
         void setDescription(const string& description) {
                 m_description = description;
+        }
+
+        /**
+         * Set remote shutdown permission.
+         */
+        void setShutdownPermission(bool isEnabled) {
+                m_isShutdownAllowed = isEnabled;
         }
 
         OCResourceHandle getHandle() {

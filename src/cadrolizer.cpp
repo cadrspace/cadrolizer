@@ -123,6 +123,13 @@ void cadrolize(po::variables_map& vm)
                 cz->setServices(vm["services"].as<string>());
                 cz->setDescription(vm["description"].as<string>());
 
+                if (vm.count("enable-shutdown")
+                    && vm["enable-shutdown"].as<string>() == "yes") {
+                        cz->setShutdownPermission(true);
+                } else {
+                        cz->setShutdownPermission(false);
+                }
+
                 stop();
         } catch (OCException e) {
                 // TODO: Handle errors
@@ -139,7 +146,8 @@ int main(int argc, char* argv[])
                 ("help,h", "Display this help message")
                 ("cadrolize,z", "Cadrolize the current host")
                 ("services", "services")
-                ("description", "description");
+                ("description", "description")
+                ("enable-shutdown", "Is remote shutdown allowed?");
 
         po::variables_map vm;
         read_settings(desc, vm);
