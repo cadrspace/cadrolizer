@@ -87,7 +87,7 @@ void read_settings(po::options_description& desc,
         po::notify(vm);
 }
 
-void cadrolize(string& services, string& description)
+void cadrolize(po::variables_map& vm)
 {
         pid_t sid;
         pid_t pid = fork();
@@ -120,8 +120,8 @@ void cadrolize(string& services, string& description)
 
         try {
                 CadrolizerResource *cz = CadrolizerResource::getInstance();
-                cz->setServices(services);
-                cz->setDescription(description);
+                cz->setServices(vm["services"].as<string>());
+                cz->setDescription(vm["description"].as<string>());
 
                 stop();
         } catch (OCException e) {
@@ -133,15 +133,13 @@ void cadrolize(string& services, string& description)
 // Entry point
 int main(int argc, char* argv[])
 {
-        string services;
-        string description;
         po::options_description desc("Options");
 
         desc.add_options()
                 ("help,h", "Display this help message")
                 ("cadrolize,z", "Cadrolize the current host")
-                ("services", po::value<string>(&services), "services")
-                ("description", po::value<string>(&description), "description");
+                ("services", "services")
+                ("description", "description");
 
         po::variables_map vm;
         read_settings(desc, vm);
@@ -154,7 +152,7 @@ int main(int argc, char* argv[])
         }
 
         if (vm.count("cadrolize")) {
-                cadrolize(services, description);
+                cadrolize(vm);
         }
 
         return 0;
