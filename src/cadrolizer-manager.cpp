@@ -171,6 +171,33 @@ void foundResource(shared_ptr<OCResource> resource)
         resource->get(test, &onGet);
 }
 
+void shutdown_resource(shared_ptr<OCResource> resource)
+{
+        if (! resource) {
+                cout << "Resource is invalid" << endl;
+                return;
+        }
+
+        try {
+                OCRepresentation rep;
+
+                rep.setValue("state", "shutdown");
+
+                QueryParamsMap query_params_map;
+
+                PutCallback on_put = [](const HeaderOptions&    headerOptions,
+                                        const OCRepresentation& rep,
+                                        const int               eCode) -> void {
+                        if (eCode != SUCCESS_RESPONSE)
+                                throw "Could not put the representation";
+                };
+
+                resource->put(rep, query_params_map, on_put);
+        } catch (exception &e) {
+                cout << e.what() << endl;
+        }
+}
+
 /* Locate cadrolizers. */
 void locate() {
 	try {
@@ -186,6 +213,20 @@ void locate() {
 	stop();
 }
 
+void shutdown() {
+        try {
+		OCPlatform::findResource(
+			"",
+			"coap://224.0.1.187/oc/core?rt=core.cadrolizer",
+			&shutdown_resource);
+	} catch (OCException &e) {
+                // TODO: Handle errors.
+                cout << e.what() << endl;
+        }
+
+	stop();
+}
+
 /* Entry point */
 int main(int argc, char* argv[])
 {
@@ -193,6 +234,7 @@ int main(int argc, char* argv[])
         desc.add_options()
                 ("help,h", "Display this help message")
                 ("locate,l", "Locate cadrolizers around.")
+                ("shutdown", "Shutdown hosts")
                 ("debug", "Enable debug mode");
 
         po::variables_map vm;
@@ -206,6 +248,20 @@ int main(int argc, char* argv[])
 
         if (vm.count("debug")) {
                 debug = true;
+        }
+
+        if (vm.count("shutdown")) {
+                PlatformConfig cfg {
+                        ServiceType::InProc,
+                        ModeType::Client,
+                        "0.0.0.0",
+                        0,
+                        QualityOfService::LowQos
+                };
+
+                OCPlatform::Configure(cfg);
+
+                shutdown();
         }
 
         if (vm.count("locate")) {
