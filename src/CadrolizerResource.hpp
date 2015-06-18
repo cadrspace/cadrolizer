@@ -121,6 +121,7 @@ public:
         }
 
         void put(OCRepresentation& rep);
+        void handleState(string& state);
 	OCStackResult handleGet(shared_ptr<OCResourceRequest> pRequest);
         OCStackResult handlePut(shared_ptr<OCResourceRequest> pRequest);
 	OCEntityHandlerResult entityHandler(shared_ptr<OCResourceRequest> request);

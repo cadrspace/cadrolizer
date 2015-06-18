@@ -74,8 +74,8 @@ OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceReq
 
 static const string STATE_SHUTDOWN = "shutdown";
 static const string STATE_REBOOT   = "reboot";
-void
-handle_state(string &state)
+
+void CadrolizerResource::handleState(string &state)
 {
         if (state == STATE_SHUTDOWN) {
                 syslog(LOG_INFO, "shutdown");
@@ -101,7 +101,7 @@ void CadrolizerResource::put(OCRepresentation& rep)
                         ostringstream os;
                         os << "State: " << state << endl;
                         syslog(LOG_INFO, os.str().c_str());
-                        handle_state(state);
+                        handleState(state);
                 }
         } catch (exception& e) {
                 syslog(LOG_ERR, e.what());
