@@ -72,6 +72,22 @@ OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceReq
 	return ehResult;
 }
 
+static const string STATE_SHUTDOWN = "shutdown";
+static const string STATE_REBOOT   = "reboot";
+void
+handle_state(string &state)
+{
+        if (state == STATE_SHUTDOWN) {
+                syslog(LOG_INFO, "shutdown");
+        } else if (state == STATE_REBOOT) {
+                syslog(LOG_INFO, "reboot");
+        } else {
+                ostringstream os;
+                os << "Unknown state: " << state << endl;
+                syslog(LOG_WARNING, os.str().c_str());
+        }
+}
+
 /**
  * Handle a PUT request.
  *
@@ -85,6 +101,7 @@ void CadrolizerResource::put(OCRepresentation& rep)
                         ostringstream os;
                         os << "State: " << state << endl;
                         syslog(LOG_INFO, os.str().c_str());
+                        handle_state(state);
                 }
         } catch (exception& e) {
                 syslog(LOG_ERR, e.what());
