@@ -19,7 +19,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="CADR sensors board"
 NAME=cadrolizer
 DAEMON=/usr/local/bin/$NAME
-DAEMON_ARGS=""
+DAEMON_ARGS="--cadrolize"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
