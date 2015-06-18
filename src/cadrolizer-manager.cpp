@@ -180,8 +180,9 @@ void shutdown_resource(shared_ptr<OCResource> resource)
 
         try {
                 OCRepresentation rep;
+                string state = "shutdown";
 
-                rep.setValue("state", "shutdown");
+                rep.setValue("state", state);
 
                 QueryParamsMap query_params_map;
 
