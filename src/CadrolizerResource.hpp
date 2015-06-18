@@ -120,7 +120,7 @@ public:
                                 syslog(LOG_INFO, os.str().c_str());
                         }
                 } catch (exception& e) {
-                        cout << e.what() << endl;
+                        syslog(LOG_ERR, e.what());
                 }
         }
 
