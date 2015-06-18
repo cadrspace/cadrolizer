@@ -78,7 +78,11 @@ static const string STATE_REBOOT   = "reboot";
 void CadrolizerResource::handleState(string &state)
 {
         if (state == STATE_SHUTDOWN) {
-                syslog(LOG_INFO, "shutdown");
+                if (m_isShutdownAllowed) {
+                        syslog(LOG_INFO, "shutdown");
+                } else {
+                        syslog(LOG_WARNING, "shutdown is not allowed");
+                }
         } else if (state == STATE_REBOOT) {
                 syslog(LOG_INFO, "reboot");
         } else {
