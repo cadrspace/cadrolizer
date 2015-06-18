@@ -72,4 +72,23 @@ OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceReq
 	return ehResult;
 }
 
+/**
+ * Handle a PUT request.
+ *
+ * @param rep A resource representation.
+ */
+void CadrolizerResource::put(OCRepresentation& rep)
+{
+        string state;
+        try {
+                if (rep.getValue("state", state)) {
+                        ostringstream os;
+                        os << "State: " << state << endl;
+                        syslog(LOG_INFO, os.str().c_str());
+                }
+        } catch (exception& e) {
+                syslog(LOG_ERR, e.what());
+        }
+}
+
 /* CadrolizerResource.cpp ends here. */
