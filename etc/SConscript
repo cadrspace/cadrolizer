@@ -8,4 +8,5 @@ else:
     init_source = 'init.debian'
 
 env.InstallAs(target = '/etc/init.d/cadrolizer', source = init_source)
-env.Alias('install', '/etc/init.d/cadrolizer')
+env.Install('/etc/', 'cadrolizer.conf')
+env.Alias('install', [ '/etc/init.d/cadrolizer', '/etc/'])
