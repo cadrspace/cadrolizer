@@ -98,11 +98,10 @@ void reboot()
 void CadrolizerResource::handleState(string &state)
 {
         if (state == STATE_SHUTDOWN) {
-                if (m_isShutdownAllowed) {
+                if (m_isShutdownAllowed)
                         shutdown();
-                } else {
+                else
                         syslog(LOG_WARNING, "shutdown is not allowed");
-                }
         } else if (state == STATE_REBOOT) {
                 if (m_isShutdownAllowed)
                         reboot();
