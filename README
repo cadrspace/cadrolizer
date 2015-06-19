@@ -29,3 +29,5 @@ $ scons install
                  variable instead of writting the actual hostname or the IP
                  address -- it's expected that a client should substitute the
                  hostname for this variable.
+   - enable-shutdown :: Enable remote shutown/reboot of the machine.  Allowed
+        values: "yes", "no"
