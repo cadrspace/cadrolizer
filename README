@@ -31,3 +31,30 @@ $ scons install
                  hostname for this variable.
    - enable-shutdown :: Enable remote shutown/reboot of the machine.  Allowed
         values: "yes", "no"
+
+** Usage
+   The application consists of two parts: =cadrolizer= daemon which connects
+   the machine to the IoT network of cadrolizers, and =cadr= tool to manage
+   cadrolizers around.
+
+   First of all, you should check if the configuration in
+   =/etc/cadrolizer.conf= is OK for you.
+
+   Then, start a =cadrolizer= daemon on each machine that should be connected
+   to the cadrolizers network:
+#+BEGIN_EXAMPLE
+$ cadrolizer --cadrolize
+#+END_EXAMPLE
+
+   When a daemon is started, the information about machines may be queried
+   with =cadr= tool:
+#+BEGIN_EXAMPLE
+$ cadr -l
+#+END_EXAMPLE
+
+   Note that if you're going to shutdown/reboot machines remotely by means of
+   =cadr= tool, you must make sure that =cadrolizer= daemon has sufficient
+   rights to call =shutdown(8)= command.
+
+   Please use =-h= or =--help= flag to get the more detailed information on
+   each tool.
