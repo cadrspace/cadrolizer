@@ -11,7 +11,7 @@
 ** Building and installation
    The project can be built using =scons= tool:
 #+BEGIN_EXAMPLE
-$ scons
+$ scons iotivity-path=/path/to/iotivity-distribution
 #+END_EXAMPLE
 
    Installation can be done as follows:
