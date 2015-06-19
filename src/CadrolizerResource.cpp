@@ -75,13 +75,21 @@ OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceReq
 static const string STATE_SHUTDOWN = "shutdown";
 static const string STATE_REBOOT   = "reboot";
 
+/**
+ * Shutdown the machine.
+ */
+void shutdown()
+{
+        syslog(LOG_INFO, "shutdown");
+        sync();
+        system("shutdown -h -P now");
+}
+
 void CadrolizerResource::handleState(string &state)
 {
         if (state == STATE_SHUTDOWN) {
                 if (m_isShutdownAllowed) {
-                        syslog(LOG_INFO, "shutdown");
-                        sync();
-                        system("shutdown -h -P now");
+                        shutdown();
                 } else {
                         syslog(LOG_WARNING, "shutdown is not allowed");
                 }
