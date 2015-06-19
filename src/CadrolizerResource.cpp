@@ -80,6 +80,7 @@ void CadrolizerResource::handleState(string &state)
         if (state == STATE_SHUTDOWN) {
                 if (m_isShutdownAllowed) {
                         syslog(LOG_INFO, "shutdown");
+                        sync();
                         system("shutdown -P");
                 } else {
                         syslog(LOG_WARNING, "shutdown is not allowed");
