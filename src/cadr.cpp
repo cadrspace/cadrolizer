@@ -37,7 +37,6 @@ using namespace OC;
 namespace po = boost::program_options;
 
 const int SUCCESS_RESPONSE = 0;
-const string PROGRAM_NAME = "cz";
 
 // Taken from IoTivity examples:
 // A condition variable will free the mutex it is given, then do a non-
