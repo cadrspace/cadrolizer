@@ -85,6 +85,16 @@ void shutdown()
         system("shutdown -h -P now");
 }
 
+/**
+ * Reboot the machine.
+ */
+void reboot()
+{
+        syslog(LOG_INFO, "reboot");
+        sync();
+        system("shutdown -r -P now");
+}
+
 void CadrolizerResource::handleState(string &state)
 {
         if (state == STATE_SHUTDOWN) {
@@ -94,7 +104,10 @@ void CadrolizerResource::handleState(string &state)
                         syslog(LOG_WARNING, "shutdown is not allowed");
                 }
         } else if (state == STATE_REBOOT) {
-                syslog(LOG_INFO, "reboot");
+                if (m_isShutdownAllowed)
+                        reboot();
+                else
+                        syslog(LOG_WARNING, "shutdown is not allowed");
         } else {
                 ostringstream os;
                 os << "Unknown state: " << state << endl;
