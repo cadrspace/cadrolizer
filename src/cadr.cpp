@@ -1,4 +1,4 @@
-/* cz.cpp -- Cadrolizer CLI tool.
+/* cadr.cpp -- Cadrolizer management tool.
  *
  * Copyright (C) 2015 Artyom V. Poptsov <poptsov.artyom@gmail.com>
  *
@@ -282,4 +282,4 @@ int main(int argc, char* argv[])
         return 0;
 }
 
-/* cz.cpp ends here. */
+/* cadr.cpp ends here. */
