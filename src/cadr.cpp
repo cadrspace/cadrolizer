@@ -133,6 +133,8 @@ void onGet(const HeaderOptions     &headerOptions,
                      << services
                      << endl;
         }
+
+        cout << "--" << endl;
 }
 
 void foundResource(shared_ptr<OCResource> resource)
