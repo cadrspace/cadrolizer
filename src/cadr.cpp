@@ -204,6 +204,7 @@ void locate() {
 		OCPlatform::findResource(
 			"",
 			"coap://224.0.1.187/oc/core?rt=core.cadrolizer",
+                        OC_ALL,
 			&foundResource);
 	} catch (OCException &e) {
                 // TODO: Handle errors.
@@ -218,6 +219,7 @@ void shutdown() {
 		OCPlatform::findResource(
 			"",
 			"coap://224.0.1.187/oc/core?rt=core.cadrolizer",
+                        OC_ALL,
 			&shutdown_resource);
 	} catch (OCException &e) {
                 // TODO: Handle errors.
