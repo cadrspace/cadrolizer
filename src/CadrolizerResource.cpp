@@ -92,7 +92,7 @@ void reboot()
 {
         syslog(LOG_INFO, "reboot");
         sync();
-        system("shutdown -r -P now");
+        system("shutdown -r now");
 }
 
 void CadrolizerResource::handleState(string &state)
