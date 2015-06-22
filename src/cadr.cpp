@@ -193,8 +193,10 @@ void shutdown_resource(shared_ptr<OCResource> resource,
                 switch(action) {
                 case SHUTDOWN:
                         state  = "shutdown";
+                        break;
                 case REBOOT:
                         state  = "reboot";
+                        break;
                 default:
                         throw "Unknown action";
                 };
