@@ -229,6 +229,7 @@ static const string CADROLIZER_URI = make_discovery_uri("core.cadrolizer");
 
 /* Locate cadrolizers. */
 void locate() {
+        DEBUG("CADROLIZER_URI: %s\n", CADROLIZER_URI.c_str());
 	try {
 		OCPlatform::findResource(
 			"",
@@ -245,6 +246,7 @@ void locate() {
 
 void shutdown(enum shutdown_action action) {
         OC::FindCallback cb = bind(shutdown_resource, PH::_1, action);
+        DEBUG("CADROLIZER_URI: %s\n", CADROLIZER_URI.c_str());
         try {
 		OCPlatform::findResource(
 			"",
