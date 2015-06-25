@@ -29,6 +29,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <syslog.h>
 
 #include "os.hpp"
 
@@ -120,6 +121,26 @@ string OS::getIpAddress() {
         }
 
         return os.str();
+}
+
+/**
+ * Shutdown the machine.
+ */
+void OS::shutdown()
+{
+        syslog(LOG_INFO, "shutdown");
+        sync();
+        system("shutdown -h -P now");
+}
+
+/**
+ * Reboot the machine.
+ */
+void OS::reboot()
+{
+        syslog(LOG_INFO, "reboot");
+        sync();
+        system("shutdown -r now");
 }
 
 /* os.cpp ends here. */

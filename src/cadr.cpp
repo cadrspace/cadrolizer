@@ -35,6 +35,7 @@
 using namespace std;
 using namespace OC;
 namespace po = boost::program_options;
+namespace PH = std::placeholders;
 
 const int SUCCESS_RESPONSE = 0;
 
@@ -133,6 +134,8 @@ void onGet(const HeaderOptions     &headerOptions,
                      << services
                      << endl;
         }
+
+        cout << "--" << endl;
 }
 
 void foundResource(shared_ptr<OCResource> resource)
@@ -170,7 +173,13 @@ void foundResource(shared_ptr<OCResource> resource)
         resource->get(test, &onGet);
 }
 
-void shutdown_resource(shared_ptr<OCResource> resource)
+enum shutdown_action  {
+        SHUTDOWN,
+        REBOOT
+};
+
+void shutdown_resource(shared_ptr<OCResource> resource,
+                       enum shutdown_action   action)
 {
         if (! resource) {
                 cout << "Resource is invalid" << endl;
@@ -179,7 +188,18 @@ void shutdown_resource(shared_ptr<OCResource> resource)
 
         try {
                 OCRepresentation rep;
-                string state = "shutdown";
+                string state;
+
+                switch(action) {
+                case SHUTDOWN:
+                        state  = "shutdown";
+                        break;
+                case REBOOT:
+                        state  = "reboot";
+                        break;
+                default:
+                        throw "Unknown action";
+                };
 
                 rep.setValue("state", state);
 
@@ -214,13 +234,14 @@ void locate() {
 	stop();
 }
 
-void shutdown() {
+void shutdown(enum shutdown_action action) {
+        OC::FindCallback cb = bind(shutdown_resource, PH::_1, action);
         try {
 		OCPlatform::findResource(
 			"",
 			"coap://224.0.1.187/oc/core?rt=core.cadrolizer",
                         OC_ALL,
-			&shutdown_resource);
+			cb);
 	} catch (OCException &e) {
                 // TODO: Handle errors.
                 cout << e.what() << endl;
@@ -237,6 +258,7 @@ int main(int argc, char* argv[])
                 ("help,h", "Display this help message")
                 ("locate,l", "Locate cadrolizers around.")
                 ("shutdown", "Shutdown hosts")
+                ("reboot", "Reboot hosts")
                 ("debug", "Enable debug mode");
 
         po::variables_map vm;
@@ -263,7 +285,21 @@ int main(int argc, char* argv[])
 
                 OCPlatform::Configure(cfg);
 
-                shutdown();
+                shutdown(SHUTDOWN);
+        }
+
+        if (vm.count("reboot")) {
+                PlatformConfig cfg {
+                        ServiceType::InProc,
+                        ModeType::Client,
+                        "0.0.0.0",
+                        0,
+                        QualityOfService::LowQos
+                };
+
+                OCPlatform::Configure(cfg);
+
+                shutdown(REBOOT);
         }
 
         if (vm.count("locate")) {
