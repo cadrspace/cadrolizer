@@ -218,12 +218,21 @@ void shutdown_resource(shared_ptr<OCResource> resource,
         }
 }
 
+const string make_discovery_uri(const string rt)
+{
+        ostringstream request_uri;
+        request_uri << OC_MULTICAST_DISCOVERY_URI << "?rt=" << rt;
+        return request_uri.str();
+}
+
+static const string CADROLIZER_URI = make_discovery_uri("core.cadrolizer");
+
 /* Locate cadrolizers. */
 void locate() {
 	try {
 		OCPlatform::findResource(
 			"",
-			"coap://224.0.1.187/oc/core?rt=core.cadrolizer",
+                        CADROLIZER_URI,
                         OC_ALL,
 			&foundResource);
 	} catch (OCException &e) {
@@ -239,7 +248,7 @@ void shutdown(enum shutdown_action action) {
         try {
 		OCPlatform::findResource(
 			"",
-			"coap://224.0.1.187/oc/core?rt=core.cadrolizer",
+                        CADROLIZER_URI,
                         OC_ALL,
 			cb);
 	} catch (OCException &e) {
