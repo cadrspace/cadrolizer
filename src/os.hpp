@@ -27,6 +27,8 @@ namespace OS {
         time_t getUptime();
         string getHostname();
         string getIpAddress();
+        void shutdown();
+        void reboot();
 }
 
 #endif  /* ifndef __OS_HPP__ */
