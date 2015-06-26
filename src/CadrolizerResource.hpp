@@ -127,6 +127,7 @@ public:
                 m_cadrolizerRep.setValue("uptime",      uptime);
                 m_cadrolizerRep.setValue("ip-address",  ipaddr);
                 m_cadrolizerRep.setValue("services",    m_services);
+                m_cadrolizerRep.setValue("state",       m_state);
                 return m_cadrolizerRep;
         }
 
