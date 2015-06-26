@@ -24,6 +24,7 @@
 #include <fstream>
 #include <syslog.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 
 #include "OCPlatform.h"
 #include "OCApi.h"
@@ -117,6 +118,11 @@ void cadrolize(po::variables_map& vm)
         close(STDIN_FILENO);
         close(STDOUT_FILENO);
         close(STDERR_FILENO);
+
+        /* redirect stdin, stdout, and stderr to /dev/null */
+        open("/dev/null", O_RDONLY);
+        open("/dev/null", O_RDWR);
+        open("/dev/null", O_RDWR);
 
         try {
                 CadrolizerResource *cz = CadrolizerResource::getInstance();
