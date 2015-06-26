@@ -43,6 +43,7 @@ public:
 	string m_machineName;
         string m_services;
         string m_description;
+        bool m_isSecure;
         bool m_isShutdownAllowed;
 
 	// IoTivity-specific:
@@ -54,6 +55,7 @@ public:
 		: m_name("cadrolizer"),
 		  m_typeName("core.cadrolizer"),
 		  m_cadrolizerUri("/a/cadrolizer"),
+                  m_isSecure(true),
                   m_isShutdownAllowed(false) {
 		m_cadrolizerRep.setUri(m_cadrolizerUri);
 		m_cadrolizerRep.setValue("name", m_name);
@@ -67,6 +69,10 @@ public:
         void registerResource() {
 		string resourceInterface = DEFAULT_INTERFACE;
 		uint8_t resourceProperty = OC_DISCOVERABLE | OC_OBSERVABLE;
+
+                if (m_isSecure)
+                        resourceProperty |= OC_SECURE;
+
 		EntityHandler cb = bind(&CadrolizerResource::entityHandler,
                                         this, PH::_1);
 		OCStackResult result = OCPlatform::registerResource(
@@ -85,6 +91,13 @@ public:
         static CadrolizerResource *getInstance() {
                 static CadrolizerResource *instance = new CadrolizerResource();
                 return instance;
+        }
+
+        /**
+         * Whether a cadrolizer should use a secure connection or not?
+         */
+        void setSecureSwitch(bool isSecure) {
+                m_isSecure = isSecure;
         }
 
         /**

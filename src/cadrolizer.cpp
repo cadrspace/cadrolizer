@@ -129,6 +129,9 @@ void cadrolize(po::variables_map& vm)
                 cz->setServices(vm["services"].as<string>());
                 cz->setDescription(vm["description"].as<string>());
 
+                if (vm.count("insecure"))
+                        cz->setSecureSwitch(false);
+
                 if (vm.count("enable-shutdown")
                     && vm["enable-shutdown"].as<string>() == "yes") {
                         cz->setShutdownPermission(true);
@@ -152,6 +155,7 @@ int main(int argc, char* argv[])
         desc.add_options()
                 ("help,h", "Display this help message")
                 ("cadrolize,z", "Cadrolize the current host")
+                ("insecure", "Make a non-secure cadrolizer.")
                 ("services", "services")
                 ("description", "description")
                 ("enable-shutdown", "Is remote shutdown allowed?");
