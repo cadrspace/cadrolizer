@@ -130,6 +130,7 @@ void cadrolize(po::variables_map& vm)
                         cz->setShutdownPermission(false);
                 }
 
+                cz->registerResource();
                 stop();
         } catch (OCException e) {
                 // TODO: Handle errors
