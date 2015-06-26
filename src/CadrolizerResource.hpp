@@ -58,7 +58,13 @@ public:
 		m_cadrolizerRep.setUri(m_cadrolizerUri);
 		m_cadrolizerRep.setValue("name", m_name);
 		m_cadrolizerRep.setValue("hostname", "test");
+	}
 
+        /**
+         * Register the cadrolizer resource.  This method should be called
+         * when all the needed options are set.
+         */
+        void registerResource() {
 		string resourceInterface = DEFAULT_INTERFACE;
 		uint8_t resourceProperty = OC_DISCOVERABLE | OC_OBSERVABLE;
 		EntityHandler cb = bind(&CadrolizerResource::entityHandler,
@@ -73,7 +79,7 @@ public:
 
 		if (result != OC_STACK_OK)
 			cout << "Could not create the resource";
-	}
+        }
 
 	/* Get a CadrolizerResource instance. */
         static CadrolizerResource *getInstance() {
