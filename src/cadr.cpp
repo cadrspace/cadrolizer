@@ -299,16 +299,7 @@ int main(int argc, char* argv[])
         }
 
         if (vm.count("locate")) {
-                PlatformConfig cfg {
-                        ServiceType::InProc,
-                        ModeType::Client,
-                        "0.0.0.0",
-                        0,
-                        QualityOfService::LowQos
-                };
-
-                OCPlatform::Configure(cfg);
-
+                configure_platform();
                 locate();
         }
 
