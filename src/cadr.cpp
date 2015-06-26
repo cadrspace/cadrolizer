@@ -114,6 +114,12 @@ void onGet(const HeaderOptions     &headerOptions,
                      << endl;
         }
 
+        if (rep.hasAttribute("state")) {
+                cout << "State:        "
+                     << rep.getValue<string>("state")
+                     << endl;;
+        }
+
         if (rep.hasAttribute("uptime")) {
                 cout << "Uptime:       "
                      << getUptime(rep) << " day(s)"
