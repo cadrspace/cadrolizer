@@ -218,23 +218,8 @@ void shutdown_resource(shared_ptr<OCResource> resource,
         }
 }
 
-/* Locate cadrolizers. */
-void locate() {
-	try {
-		OCPlatform::findResource(
-			"",
-			"coap://224.0.1.187/oc/core?rt=core.cadrolizer",
-			&foundResource);
-	} catch (OCException &e) {
-                // TODO: Handle errors.
-                cout << e.what() << endl;
-        }
-
-	stop();
-}
-
-void shutdown(enum shutdown_action action) {
-        OC::FindCallback cb = bind(shutdown_resource, PH::_1, action);
+void find_resource(const OC::FindCallback cb)
+{
         try {
 		OCPlatform::findResource(
 			"",
@@ -244,7 +229,17 @@ void shutdown(enum shutdown_action action) {
                 // TODO: Handle errors.
                 cout << e.what() << endl;
         }
+}
 
+/* Locate cadrolizers. */
+void locate() {
+        find_resource(foundResource);
+	stop();
+}
+
+void shutdown(enum shutdown_action action) {
+        OC::FindCallback cb = bind(shutdown_resource, PH::_1, action);
+        find_resource(cb);
 	stop();
 }
 
