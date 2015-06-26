@@ -248,6 +248,22 @@ void shutdown(enum shutdown_action action) {
 	stop();
 }
 
+/**
+ * Configure IoTivity platform.
+ */
+void configure_platform()
+{
+        PlatformConfig cfg {
+                ServiceType::InProc,
+                ModeType::Client,
+                "0.0.0.0",
+                0,
+                QualityOfService::LowQos
+        };
+
+        OCPlatform::Configure(cfg);
+}
+
 /* Entry point */
 int main(int argc, char* argv[])
 {
@@ -273,30 +289,12 @@ int main(int argc, char* argv[])
         }
 
         if (vm.count("shutdown")) {
-                PlatformConfig cfg {
-                        ServiceType::InProc,
-                        ModeType::Client,
-                        "0.0.0.0",
-                        0,
-                        QualityOfService::LowQos
-                };
-
-                OCPlatform::Configure(cfg);
-
+                configure_platform();
                 shutdown(SHUTDOWN);
         }
 
         if (vm.count("reboot")) {
-                PlatformConfig cfg {
-                        ServiceType::InProc,
-                        ModeType::Client,
-                        "0.0.0.0",
-                        0,
-                        QualityOfService::LowQos
-                };
-
-                OCPlatform::Configure(cfg);
-
+                configure_platform();
                 shutdown(REBOOT);
         }
 
