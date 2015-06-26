@@ -43,6 +43,7 @@ public:
 	string m_machineName;
         string m_services;
         string m_description;
+        string m_state;
         bool m_isShutdownAllowed;
 
 	// IoTivity-specific:
@@ -54,6 +55,7 @@ public:
 		: m_name("cadrolizer"),
 		  m_typeName("core.cadrolizer"),
 		  m_cadrolizerUri("/a/cadrolizer"),
+                  m_state("down"),
                   m_isShutdownAllowed(false) {
 		m_cadrolizerRep.setUri(m_cadrolizerUri);
 		m_cadrolizerRep.setValue("name", m_name);
@@ -79,6 +81,8 @@ public:
 
 		if (result != OC_STACK_OK)
 			cout << "Could not create the resource";
+
+                m_state = "up";
         }
 
 	/* Get a CadrolizerResource instance. */

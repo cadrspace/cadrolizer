@@ -78,15 +78,19 @@ static const string STATE_REBOOT   = "reboot";
 void CadrolizerResource::handleState(string &state)
 {
         if (state == STATE_SHUTDOWN) {
-                if (m_isShutdownAllowed)
+                if (m_isShutdownAllowed) {
+                        m_state = state;
                         OS::shutdown();
-                else
+                } else {
                         syslog(LOG_WARNING, "shutdown is not allowed");
+                }
         } else if (state == STATE_REBOOT) {
-                if (m_isShutdownAllowed)
+                if (m_isShutdownAllowed) {
+                        m_state = state;
                         OS::reboot();
-                else
+                } else {
                         syslog(LOG_WARNING, "shutdown is not allowed");
+                }
         } else {
                 ostringstream os;
                 os << "Unknown state: " << state << endl;
