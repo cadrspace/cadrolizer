@@ -119,6 +119,13 @@ void cadrolize(po::variables_map& vm)
         close(STDERR_FILENO);
 
         try {
+                PlatformConfig cfg {
+                        OC::ServiceType::InProc,
+                        OC::ModeType::Server,
+                        "0.0.0.0",
+                        0,
+                        OC::QualityOfService::LowQos
+                };
                 CadrolizerResource *cz = CadrolizerResource::getInstance();
                 cz->setServices(vm["services"].as<string>());
                 cz->setDescription(vm["description"].as<string>());
@@ -130,6 +137,7 @@ void cadrolize(po::variables_map& vm)
                         cz->setShutdownPermission(false);
                 }
 
+                OCPlatform::Configure(cfg);
                 cz->registerResource();
                 stop();
         } catch (OCException e) {
