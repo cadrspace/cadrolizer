@@ -33,6 +33,11 @@ using namespace std;
 using namespace OC;
 namespace PH = std::placeholders;
 
+inline const char* bool_to_str(bool b)
+{
+        return b ? "true" : "false";
+}
+
 class CadrolizerResource
 {
 public:
@@ -122,12 +127,16 @@ public:
                 string hostname = OS::getHostname();
                 string uptime   = to_string(OS::getUptime());
                 string ipaddr   = OS::getIpAddress();
+                string is_shutdown_allowed_str
+                        = string(bool_to_str(m_isShutdownAllowed));
                 m_cadrolizerRep.setValue("hostname",    string(hostname));
                 m_cadrolizerRep.setValue("description", m_description);
                 m_cadrolizerRep.setValue("uptime",      uptime);
                 m_cadrolizerRep.setValue("ip-address",  ipaddr);
                 m_cadrolizerRep.setValue("services",    m_services);
                 m_cadrolizerRep.setValue("state",       m_state);
+                m_cadrolizerRep.setValue("shutdown-allowed?",
+                                         is_shutdown_allowed_str);
                 return m_cadrolizerRep;
         }
 

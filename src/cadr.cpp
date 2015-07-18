@@ -141,6 +141,12 @@ void onGet(const HeaderOptions     &headerOptions,
                      << endl;
         }
 
+        if (rep.hasAttribute("shutdown-allowed?")) {
+                cout << "Shutdown allowed?: "
+                     << rep.getValue<string>("shutdown-allowed?")
+                     << endl;
+        }
+
         cout << "--" << endl;
 }
 
