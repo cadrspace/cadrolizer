@@ -18,6 +18,9 @@
  * along with Cadrolizer.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CADROLIZER_EXCEPTION_HPP__
+#define __CADROLIZER_EXCEPTION_HPP__
+
 #include <exception>
 
 using namespace std;
@@ -35,5 +38,7 @@ class CadrolizerException: public exception
                 return m_message;
         }
 };
+
+#endif  /* ifndef __CADROLIZER_EXCEPTION_HPP__ */
 
 /* CadrolizerException.hpp ends here. */
