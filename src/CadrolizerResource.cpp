@@ -76,6 +76,11 @@ OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceReq
 static const string STATE_SHUTDOWN = "shutdown";
 static const string STATE_REBOOT   = "reboot";
 
+/**
+ * Handle state change.  Throw 'CadrolizerException' on an error.
+ *
+ * @param state A new state to handle.
+ */
 void CadrolizerResource::handleState(string &state)
 {
         if (state == STATE_SHUTDOWN) {
