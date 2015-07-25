@@ -88,7 +88,7 @@ void CadrolizerResource::handleState(string &state)
                         m_state = state;
                         OS::shutdown();
                 } else {
-                        throw new CadrolizerException(
+                        throw CadrolizerException(
                                 "shutdown is not allowed");
                 }
         } else if (state == STATE_REBOOT) {
@@ -96,13 +96,13 @@ void CadrolizerResource::handleState(string &state)
                         m_state = state;
                         OS::reboot();
                 } else {
-                        throw new CadrolizerException(
+                        throw CadrolizerException(
                                 "shutdown is not allowed");
                 }
         } else {
                 ostringstream os;
                 os << "Unknown state: " << state << endl;
-                throw new CadrolizerException(os.str().c_str());
+                throw CadrolizerException(os.str().c_str());
         }
 }
 
