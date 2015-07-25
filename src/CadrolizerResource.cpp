@@ -48,10 +48,16 @@ OCStackResult CadrolizerResource::handlePut(shared_ptr<OCResourceRequest> pReque
         auto pResponse = make_shared<OCResourceResponse>();
         OCRepresentation rep = pRequest->getResourceRepresentation();
 
-        this->put(rep);
+        try {
+                this->put(rep);
+                pResponse->setErrorCode(200);
+                pResponse->setResponseResult(OC_EH_OK);
+        } catch (CadrolizerException &e) {
+                syslog(LOG_WARNING, e.what());
+                pResponse->setErrorCode(400);
+                pResponse->setResponseResult(OC_EH_ERROR);
+        }
 
-        pResponse->setErrorCode(200);
-        pResponse->setResponseResult(OC_EH_OK);
         pResponse->setResourceRepresentation(this->get());
 
         return OCPlatform::sendResponse(pResponse);
@@ -114,15 +120,14 @@ void CadrolizerResource::handleState(string &state)
 void CadrolizerResource::put(OCRepresentation& rep)
 {
         string state;
-        try {
-                if (rep.getValue("state", state)) {
-                        ostringstream os;
-                        os << "State: " << state << endl;
-                        syslog(LOG_INFO, os.str().c_str());
-                        handleState(state);
-                }
-        } catch (exception& e) {
-                syslog(LOG_ERR, e.what());
+        if (rep.getValue("state", state)) {
+                ostringstream os;
+                os << "State: " << state << endl;
+                syslog(LOG_INFO, os.str().c_str());
+                handleState(state);
+        } else {
+                throw CadrolizerException(
+                        "No state provided.");
         }
 }
 
