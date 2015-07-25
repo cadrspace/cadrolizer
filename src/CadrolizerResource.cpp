@@ -25,6 +25,7 @@
 #include "OCApi.h"
 
 #include "CadrolizerResource.hpp"
+#include "CadrolizerException.hpp"
 
 using namespace OC;
 using namespace std;
@@ -82,19 +83,21 @@ void CadrolizerResource::handleState(string &state)
                         m_state = state;
                         OS::shutdown();
                 } else {
-                        syslog(LOG_WARNING, "shutdown is not allowed");
+                        throw new CadrolizerException(
+                                "shutdown is not allowed");
                 }
         } else if (state == STATE_REBOOT) {
                 if (m_isShutdownAllowed) {
                         m_state = state;
                         OS::reboot();
                 } else {
-                        syslog(LOG_WARNING, "shutdown is not allowed");
+                        throw new CadrolizerException(
+                                "shutdown is not allowed");
                 }
         } else {
                 ostringstream os;
                 os << "Unknown state: " << state << endl;
-                syslog(LOG_WARNING, os.str().c_str());
+                throw new CadrolizerException(os.str().c_str());
         }
 }
 
