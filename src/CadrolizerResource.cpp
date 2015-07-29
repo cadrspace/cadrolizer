@@ -25,6 +25,7 @@
 #include "OCApi.h"
 
 #include "CadrolizerResource.hpp"
+#include "CadrolizerException.hpp"
 
 using namespace OC;
 using namespace std;
@@ -47,10 +48,16 @@ OCStackResult CadrolizerResource::handlePut(shared_ptr<OCResourceRequest> pReque
         auto pResponse = make_shared<OCResourceResponse>();
         OCRepresentation rep = pRequest->getResourceRepresentation();
 
-        this->put(rep);
+        try {
+                this->put(rep);
+                pResponse->setErrorCode(200);
+                pResponse->setResponseResult(OC_EH_OK);
+        } catch (CadrolizerException &e) {
+                syslog(LOG_WARNING, e.what());
+                pResponse->setErrorCode(400);
+                pResponse->setResponseResult(OC_EH_ERROR);
+        }
 
-        pResponse->setErrorCode(200);
-        pResponse->setResponseResult(OC_EH_OK);
         pResponse->setResourceRepresentation(this->get());
 
         return OCPlatform::sendResponse(pResponse);
@@ -75,22 +82,33 @@ OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceReq
 static const string STATE_SHUTDOWN = "shutdown";
 static const string STATE_REBOOT   = "reboot";
 
+/**
+ * Handle state change.  Throw 'CadrolizerException' on an error.
+ *
+ * @param state A new state to handle.
+ */
 void CadrolizerResource::handleState(string &state)
 {
         if (state == STATE_SHUTDOWN) {
-                if (m_isShutdownAllowed)
+                if (m_isShutdownAllowed) {
+                        m_state = state;
                         OS::shutdown();
-                else
-                        syslog(LOG_WARNING, "shutdown is not allowed");
+                } else {
+                        throw CadrolizerException(
+                                "shutdown is not allowed");
+                }
         } else if (state == STATE_REBOOT) {
-                if (m_isShutdownAllowed)
+                if (m_isShutdownAllowed) {
+                        m_state = state;
                         OS::reboot();
-                else
-                        syslog(LOG_WARNING, "shutdown is not allowed");
+                } else {
+                        throw CadrolizerException(
+                                "shutdown is not allowed");
+                }
         } else {
                 ostringstream os;
                 os << "Unknown state: " << state << endl;
-                syslog(LOG_WARNING, os.str().c_str());
+                throw CadrolizerException(os.str().c_str());
         }
 }
 
@@ -102,15 +120,14 @@ void CadrolizerResource::handleState(string &state)
 void CadrolizerResource::put(OCRepresentation& rep)
 {
         string state;
-        try {
-                if (rep.getValue("state", state)) {
-                        ostringstream os;
-                        os << "State: " << state << endl;
-                        syslog(LOG_INFO, os.str().c_str());
-                        handleState(state);
-                }
-        } catch (exception& e) {
-                syslog(LOG_ERR, e.what());
+        if (rep.getValue("state", state)) {
+                ostringstream os;
+                os << "State: " << state << endl;
+                syslog(LOG_INFO, os.str().c_str());
+                handleState(state);
+        } else {
+                throw CadrolizerException(
+                        "No state provided.");
         }
 }
 

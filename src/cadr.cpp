@@ -114,6 +114,12 @@ void onGet(const HeaderOptions     &headerOptions,
                      << endl;
         }
 
+        if (rep.hasAttribute("state")) {
+                cout << "State:        "
+                     << rep.getValue<string>("state")
+                     << endl;;
+        }
+
         if (rep.hasAttribute("uptime")) {
                 cout << "Uptime:       "
                      << getUptime(rep) << " day(s)"
@@ -132,6 +138,12 @@ void onGet(const HeaderOptions     &headerOptions,
                         replace_all_x(services, "<host>", hostname);
                 cout << "Services:     "
                      << services
+                     << endl;
+        }
+
+        if (rep.hasAttribute("shutdown-allowed?")) {
+                cout << "Shutdown allowed?: "
+                     << rep.getValue<string>("shutdown-allowed?")
                      << endl;
         }
 
@@ -227,25 +239,8 @@ const string make_discovery_uri(const string rt)
 
 static const string CADROLIZER_URI = make_discovery_uri("core.cadrolizer");
 
-/* Locate cadrolizers. */
-void locate() {
-        DEBUG("CADROLIZER_URI: %s\n", CADROLIZER_URI.c_str());
-	try {
-		OCPlatform::findResource(
-			"",
-                        CADROLIZER_URI,
-                        OC_ALL,
-			&foundResource);
-	} catch (OCException &e) {
-                // TODO: Handle errors.
-                cout << e.what() << endl;
-        }
-
-	stop();
-}
-
-void shutdown(enum shutdown_action action) {
-        OC::FindCallback cb = bind(shutdown_resource, PH::_1, action);
+void find_resource(const OC::FindCallback cb)
+{
         DEBUG("CADROLIZER_URI: %s\n", CADROLIZER_URI.c_str());
         try {
 		OCPlatform::findResource(
@@ -257,7 +252,17 @@ void shutdown(enum shutdown_action action) {
                 // TODO: Handle errors.
                 cout << e.what() << endl;
         }
+}
 
+/* Locate cadrolizers. */
+void locate() {
+        find_resource(foundResource);
+	stop();
+}
+
+void shutdown(enum shutdown_action action) {
+        OC::FindCallback cb = bind(shutdown_resource, PH::_1, action);
+        find_resource(cb);
 	stop();
 }
 

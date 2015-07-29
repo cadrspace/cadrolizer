@@ -88,6 +88,22 @@ void read_settings(po::options_description& desc,
         po::notify(vm);
 }
 
+/**
+ * Configure IoTivity platform.
+ */
+void configure_platform()
+{
+        PlatformConfig cfg {
+                OC::ServiceType::InProc,
+                OC::ModeType::Server,
+                "0.0.0.0",
+                0,
+                OC::QualityOfService::LowQos
+        };
+
+        OCPlatform::Configure(cfg);
+}
+
 void cadrolize(po::variables_map& vm)
 {
         pid_t sid;
@@ -125,14 +141,10 @@ void cadrolize(po::variables_map& vm)
         open("/dev/null", O_RDWR);
 
         try {
-                PlatformConfig cfg {
-                        OC::ServiceType::InProc,
-                        OC::ModeType::Server,
-                        "0.0.0.0",
-                        0,
-                        OC::QualityOfService::LowQos
-                };
                 CadrolizerResource *cz = CadrolizerResource::getInstance();
+
+                configure_platform();
+
                 cz->setServices(vm["services"].as<string>());
                 cz->setDescription(vm["description"].as<string>());
 
@@ -146,7 +158,6 @@ void cadrolize(po::variables_map& vm)
                         cz->setShutdownPermission(false);
                 }
 
-                OCPlatform::Configure(cfg);
                 cz->registerResource();
                 stop();
         } catch (OCException e) {
