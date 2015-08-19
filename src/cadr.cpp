@@ -233,7 +233,7 @@ void shutdown_resource(shared_ptr<OCResource> resource,
 const string make_discovery_uri(const string rt)
 {
         ostringstream request_uri;
-        request_uri << OC_MULTICAST_DISCOVERY_URI << "?rt=" << rt;
+        request_uri << OC_RSRVD_WELL_KNOWN_URI << "?rt=" << rt;
         return request_uri.str();
 }
 
@@ -246,7 +246,7 @@ void find_resource(const OC::FindCallback cb)
 		OCPlatform::findResource(
 			"",
                         CADROLIZER_URI,
-                        OC_ALL,
+                        CT_DEFAULT,
 			cb);
 	} catch (OCException &e) {
                 // TODO: Handle errors.
