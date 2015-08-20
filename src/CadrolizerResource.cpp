@@ -32,15 +32,15 @@ using namespace std;
 namespace PH = std::placeholders;
 
 OCStackResult CadrolizerResource::handleGet(shared_ptr<OCResourceRequest> pRequest) {
-	auto pResponse = make_shared<OCResourceResponse>();
+        auto pResponse = make_shared<OCResourceResponse>();
 
-	pResponse->setRequestHandle(pRequest->getRequestHandle());
-	pResponse->setResourceHandle(pRequest->getResourceHandle());
-	pResponse->setResourceRepresentation(this->get());
-	pResponse->setErrorCode(200);
-	pResponse->setResponseResult(OC_EH_OK);
+        pResponse->setRequestHandle(pRequest->getRequestHandle());
+        pResponse->setResourceHandle(pRequest->getResourceHandle());
+        pResponse->setResourceRepresentation(this->get());
+        pResponse->setErrorCode(200);
+        pResponse->setResponseResult(OC_EH_OK);
 
-	return OCPlatform::sendResponse(pResponse);
+        return OCPlatform::sendResponse(pResponse);
 }
 
 OCStackResult CadrolizerResource::handlePut(shared_ptr<OCResourceRequest> pRequest)
@@ -64,10 +64,10 @@ OCStackResult CadrolizerResource::handlePut(shared_ptr<OCResourceRequest> pReque
 }
 
 OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceRequest> request) {
-	OCEntityHandlerResult ehResult = OC_EH_ERROR;
-	int requestFlag = request->getRequestHandlerFlag();
+        OCEntityHandlerResult ehResult = OC_EH_ERROR;
+        int requestFlag = request->getRequestHandlerFlag();
         string requestType = request->getRequestType();
-	if (requestFlag & RequestHandlerFlag::RequestFlag) {
+        if (requestFlag & RequestHandlerFlag::RequestFlag) {
                 if (requestType == "GET") {
                         if (handleGet(request) == OC_STACK_OK)
                                 ehResult = OC_EH_OK;
@@ -75,8 +75,8 @@ OCEntityHandlerResult CadrolizerResource::entityHandler(shared_ptr<OCResourceReq
                         if (handlePut(request) == OC_STACK_OK)
                                 ehResult = OC_EH_OK;
                 }
-	}
-	return ehResult;
+        }
+        return ehResult;
 }
 
 static const string STATE_SHUTDOWN = "shutdown";

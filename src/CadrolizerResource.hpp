@@ -41,62 +41,62 @@ inline const char* bool_to_str(bool b)
 class CadrolizerResource
 {
 public:
-	string m_name;
-	string m_typeName;
-	string m_cadrolizerUri;
+        string m_name;
+        string m_typeName;
+        string m_cadrolizerUri;
 
-	string m_machineName;
+        string m_machineName;
         string m_services;
         string m_description;
         bool m_isSecure;
         string m_state;
         bool m_isShutdownAllowed;
 
-	// IoTivity-specific:
-	OCRepresentation m_cadrolizerRep;
-	OCResourceHandle m_cadrolizerHandle;
+        // IoTivity-specific:
+        OCRepresentation m_cadrolizerRep;
+        OCResourceHandle m_cadrolizerHandle;
 
 public:
-	CadrolizerResource()
-		: m_name("cadrolizer"),
-		  m_typeName("core.cadrolizer"),
-		  m_cadrolizerUri("/a/cadrolizer"),
+        CadrolizerResource()
+                : m_name("cadrolizer"),
+                  m_typeName("core.cadrolizer"),
+                  m_cadrolizerUri("/a/cadrolizer"),
                   m_isSecure(true),
                   m_state("down"),
                   m_isShutdownAllowed(false) {
-		m_cadrolizerRep.setUri(m_cadrolizerUri);
-		m_cadrolizerRep.setValue("name", m_name);
-		m_cadrolizerRep.setValue("hostname", "test");
-	}
+                m_cadrolizerRep.setUri(m_cadrolizerUri);
+                m_cadrolizerRep.setValue("name", m_name);
+                m_cadrolizerRep.setValue("hostname", "test");
+        }
 
         /**
          * Register the cadrolizer resource.  This method should be called
          * when all the needed options are set.
          */
         void registerResource() {
-		string resourceInterface = DEFAULT_INTERFACE;
-		uint8_t resourceProperty = OC_DISCOVERABLE | OC_OBSERVABLE;
+                string resourceInterface = DEFAULT_INTERFACE;
+                uint8_t resourceProperty = OC_DISCOVERABLE | OC_OBSERVABLE;
 
                 if (m_isSecure)
                         resourceProperty |= OC_SECURE;
 
-		EntityHandler cb = bind(&CadrolizerResource::entityHandler,
+                EntityHandler cb = bind(&CadrolizerResource::entityHandler,
                                         this, PH::_1);
-		OCStackResult result = OCPlatform::registerResource(
-			m_cadrolizerHandle,
-			m_cadrolizerUri,
-			m_typeName,
-			resourceInterface,
-			cb,
-			resourceProperty);
+                OCStackResult result = OCPlatform::registerResource(
+                        m_cadrolizerHandle,
+                        m_cadrolizerUri,
+                        m_typeName,
+                        resourceInterface,
+                        cb,
+                        resourceProperty);
 
-		if (result != OC_STACK_OK)
-			cout << "Could not create the resource";
+                if (result != OC_STACK_OK)
+                        cout << "Could not create the resource";
 
                 m_state = "up";
         }
 
-	/* Get a CadrolizerResource instance. */
+        /* Get a CadrolizerResource instance. */
         static CadrolizerResource *getInstance() {
                 static CadrolizerResource *instance = new CadrolizerResource();
                 return instance;
@@ -155,9 +155,9 @@ public:
 
         void put(OCRepresentation& rep);
         void handleState(string& state);
-	OCStackResult handleGet(shared_ptr<OCResourceRequest> pRequest);
+        OCStackResult handleGet(shared_ptr<OCResourceRequest> pRequest);
         OCStackResult handlePut(shared_ptr<OCResourceRequest> pRequest);
-	OCEntityHandlerResult entityHandler(shared_ptr<OCResourceRequest> request);
+        OCEntityHandlerResult entityHandler(shared_ptr<OCResourceRequest> request);
 };
 
 #endif /* ifndef __CADROLIZER_RESOURCE_HPP__ */

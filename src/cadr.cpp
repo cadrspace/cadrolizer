@@ -46,10 +46,10 @@ const int SUCCESS_RESPONSE = 0;
 // of while(true);
 void stop()
 {
-	mutex blocker;
-	condition_variable cv;
-	unique_lock<mutex> lock(blocker);
-	cv.wait(lock);
+        mutex blocker;
+        condition_variable cv;
+        unique_lock<mutex> lock(blocker);
+        cv.wait(lock);
 }
 
 /**
@@ -91,22 +91,22 @@ void onGet(const HeaderOptions     &headerOptions,
 {
         string hostname;
 
-	DEBUG("onGet: Called\n");
+        DEBUG("onGet: Called\n");
         if (! (eCode == SUCCESS_RESPONSE))
                 return;
 
         if (rep.hasAttribute("name")) {
-		string name = rep.getValue<string>("name");
-		DEBUG("onGet: name: %s\n", name.c_str());
-		DEBUG("onGet: hasAttribute\n");
+                string name = rep.getValue<string>("name");
+                DEBUG("onGet: name: %s\n", name.c_str());
+                DEBUG("onGet: hasAttribute\n");
         }
 
-	if (rep.hasAttribute("hostname")) {
+        if (rep.hasAttribute("hostname")) {
                 hostname = rep.getValue<string>("hostname");
-		cout << "Hostname:     "
+                cout << "Hostname:     "
                      << hostname
-		     << endl;
-	}
+                     << endl;
+        }
 
         if (rep.hasAttribute("description")) {
                 cout << "Description:  "
@@ -168,13 +168,13 @@ void foundResource(shared_ptr<OCResource> resource)
                 DEBUG("\tURI:  %s\n", resourceURI.c_str());
                 DEBUG("\tHost: %s\n", hostAddress.c_str());
                 DEBUG("List of resource types:\n");
-		if (debug) {
-			for (auto &type : resource->getResourceTypes())
-				DEBUG("%s\t", type.c_str());
-			DEBUG("List of resource interfaces:\n");
-			for (auto &interface : resource->getResourceInterfaces())
-				DEBUG("%s\t", interface.c_str());
-		}
+                if (debug) {
+                        for (auto &type : resource->getResourceTypes())
+                                DEBUG("%s\t", type.c_str());
+                        DEBUG("List of resource interfaces:\n");
+                        for (auto &interface : resource->getResourceInterfaces())
+                                DEBUG("%s\t", interface.c_str());
+                }
         } catch (exception &e) {
                 // TODO: Handle errors.
                 cout << e.what() << endl;
@@ -243,12 +243,12 @@ void find_resource(const OC::FindCallback cb)
 {
         DEBUG("CADROLIZER_URI: %s\n", CADROLIZER_URI.c_str());
         try {
-		OCPlatform::findResource(
-			"",
+                OCPlatform::findResource(
+                        "",
                         CADROLIZER_URI,
                         CT_DEFAULT,
-			cb);
-	} catch (OCException &e) {
+                        cb);
+        } catch (OCException &e) {
                 // TODO: Handle errors.
                 cout << e.what() << endl;
         }
@@ -257,13 +257,13 @@ void find_resource(const OC::FindCallback cb)
 /* Locate cadrolizers. */
 void locate() {
         find_resource(foundResource);
-	stop();
+        stop();
 }
 
 void shutdown(enum shutdown_action action) {
         OC::FindCallback cb = bind(shutdown_resource, PH::_1, action);
         find_resource(cb);
-	stop();
+        stop();
 }
 
 /**

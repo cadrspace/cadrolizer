@@ -54,10 +54,10 @@ const string CONFIG_FILE = "/etc/cadrolizer.conf";
 // of while(true);
 void stop()
 {
-	mutex blocker;
-	condition_variable cv;
-	unique_lock<mutex> lock(blocker);
-	cv.wait(lock);
+        mutex blocker;
+        condition_variable cv;
+        unique_lock<mutex> lock(blocker);
+        cv.wait(lock);
 }
 
 
