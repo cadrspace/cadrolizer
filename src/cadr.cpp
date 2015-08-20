@@ -98,15 +98,18 @@ void print_list(const string list)
 }
 
 /* Print information about the found resource. */
-void onGet(const HeaderOptions     &headerOptions,
-           const OCRepresentation  &rep,
-           const int               eCode)
+void onGet(const string               id,
+           const HeaderOptions        &headerOptions,
+           const OCRepresentation     &rep,
+           const int                  eCode)
 {
         string hostname;
 
         DEBUG("onGet: Called\n");
         if (! (eCode == SUCCESS_RESPONSE))
                 return;
+
+        cout << "ID: " << id << endl;
 
         if (rep.hasAttribute("name")) {
                 string name = rep.getValue<string>("name");
@@ -192,9 +195,14 @@ void foundResource(shared_ptr<OCResource> resource)
                 cout << e.what() << endl;
         }
 
+
+
         // Make GET request:
         QueryParamsMap test;
-        resource->get(test, &onGet);
+        ostringstream id;
+        id << resource->uniqueIdentifier();
+        GetCallback cb = bind(onGet, id.str(), PH::_1, PH::_2, PH::_3);
+        resource->get(test, cb);
 }
 
 enum shutdown_action  {
