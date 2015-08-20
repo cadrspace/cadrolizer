@@ -143,9 +143,8 @@ void onGet(const string               id,
         }
 
         if (rep.hasAttribute("ip-address")) {
-                cout << "IP Address:   "
-                     << rep.getValue<string>("ip-address")
-                     << endl;
+                cout << "IP Address:" << endl;
+                print_list(rep.getValue<string>("ip-address"));
         }
 
         if (rep.hasAttribute("services")) {

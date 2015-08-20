@@ -110,12 +110,12 @@ string OS::getIpAddress() {
                         os << ifa->ifa_name << ":"
                            << ifaToStr(ifa, AF_INET, INET_ADDRSTRLEN);
                         if (ifa->ifa_next)
-                                os << ",";
+                                os << " ";
                 } else if (ifa->ifa_addr->sa_family == AF_INET6) {
                         os << ifa->ifa_name << ":"
                            << ifaToStr(ifa, AF_INET6, INET6_ADDRSTRLEN);
                         if (ifa->ifa_next)
-                                os << ",";
+                                os << " ";
                 }
 
         }
