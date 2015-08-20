@@ -22,6 +22,7 @@
 
 #include <mutex>
 #include <condition_variable>
+#include <boost/algorithm/string.hpp>
 
 #include "OCPlatform.h"
 #include "OCApi.h"
@@ -84,6 +85,18 @@ void replace_all_x(std::string&  str,
         }
 }
 
+void print_list(const string list)
+{
+        vector<string> v;
+        boost::split(v, list, boost::is_any_of("\t "));
+
+        for (vector<string>::iterator it = v.begin(); it != v.end(); ++it) {
+                cout << "  "
+                     << *it
+                     << endl;
+        }
+}
+
 /* Print information about the found resource. */
 void onGet(const HeaderOptions     &headerOptions,
            const OCRepresentation  &rep,
@@ -136,9 +149,8 @@ void onGet(const HeaderOptions     &headerOptions,
                 string services = rep.getValue<string>("services");
                 if (rep.hasAttribute("hostname"))
                         replace_all_x(services, "<host>", hostname);
-                cout << "Services:     "
-                     << services
-                     << endl;
+                cout << "Services:" << endl;
+                print_list(services);
         }
 
         if (rep.hasAttribute("shutdown-allowed?")) {
