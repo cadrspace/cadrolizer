@@ -56,7 +56,7 @@ void stop()
  * Get the uptime of a machine.  Return the uptime value (in days) as
  * a string.
  */
-string getUptime(const OCRepresentation &rep)
+string get_uptime(const OCRepresentation &rep)
 {
         double uptime = atof(rep.getValue<string>("uptime").c_str());
         return to_string(uptime / 60 / 60 / 24);
@@ -122,7 +122,7 @@ void onGet(const HeaderOptions     &headerOptions,
 
         if (rep.hasAttribute("uptime")) {
                 cout << "Uptime:       "
-                     << getUptime(rep) << " day(s)"
+                     << get_uptime(rep) << " day(s)"
                      << endl;
         }
 
