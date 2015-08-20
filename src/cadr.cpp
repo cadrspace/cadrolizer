@@ -40,6 +40,31 @@ namespace PH = std::placeholders;
 
 const int SUCCESS_RESPONSE = 0;
 
+
+static const string COLOR_RESET = "\033[0m";
+
+enum colors {
+        RED     = 31,
+        GREEN   = 32,
+        YELLOW  = 33,
+        BLUE    = 34,
+        MAGENTA = 35,
+        CYAN    = 36,
+        WHITE   = 37
+};
+
+/**
+ * Print MESSAGE in the specified COLOR.
+ *
+ * @param color A color to use.
+ * @param message A message to print.
+ */
+void color_print(enum colors color, const string &message)
+{
+        cout << "\x1B[" << color << "m" << message << COLOR_RESET;
+}
+
+
 // Taken from IoTivity examples:
 // A condition variable will free the mutex it is given, then do a non-
 // intensive block until 'notify' is called on it.  In this case, since we
@@ -109,7 +134,8 @@ void onGet(const string               id,
         if (! (eCode == SUCCESS_RESPONSE))
                 return;
 
-        cout << "ID: " << id << endl;
+        color_print(GREEN, "ID: ");
+        cout << id << endl;
 
         if (rep.hasAttribute("name")) {
                 string name = rep.getValue<string>("name");
@@ -119,31 +145,30 @@ void onGet(const string               id,
 
         if (rep.hasAttribute("hostname")) {
                 hostname = rep.getValue<string>("hostname");
-                cout << "Hostname:     "
-                     << hostname
-                     << endl;
+                color_print(GREEN, "Hostname:     ");
+                cout << hostname << endl;
         }
 
         if (rep.hasAttribute("description")) {
-                cout << "Description:  "
-                     << rep.getValue<string>("description")
+                color_print(GREEN, "Description:  ");
+                cout << rep.getValue<string>("description")
                      << endl;
         }
 
         if (rep.hasAttribute("state")) {
-                cout << "State:        "
-                     << rep.getValue<string>("state")
+                color_print(GREEN, "State:        ");
+                cout << rep.getValue<string>("state")
                      << endl;;
         }
 
         if (rep.hasAttribute("uptime")) {
-                cout << "Uptime:       "
-                     << get_uptime(rep) << " day(s)"
+                color_print(GREEN, "Uptime:       ");
+                cout << get_uptime(rep) << " day(s)"
                      << endl;
         }
 
         if (rep.hasAttribute("ip-address")) {
-                cout << "IP Address:" << endl;
+                color_print(GREEN, "IP Address:\n");
                 print_list(rep.getValue<string>("ip-address"));
         }
 
@@ -151,17 +176,17 @@ void onGet(const string               id,
                 string services = rep.getValue<string>("services");
                 if (rep.hasAttribute("hostname"))
                         replace_all_x(services, "<host>", hostname);
-                cout << "Services:" << endl;
+                color_print(GREEN, "Services:\n");
                 print_list(services);
         }
 
         if (rep.hasAttribute("shutdown-allowed?")) {
-                cout << "Shutdown allowed?: "
-                     << rep.getValue<string>("shutdown-allowed?")
+                color_print(GREEN, "Shutdown allowed?: ");
+                cout << rep.getValue<string>("shutdown-allowed?")
                      << endl;
         }
 
-        cout << "--" << endl;
+        color_print(CYAN, "--\n");
 }
 
 void foundResource(shared_ptr<OCResource> resource)
