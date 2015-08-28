@@ -40,7 +40,7 @@ using namespace std;
  */
 time_t OS::getUptime() {
         double upsecs;
-        time_t uptime;
+        time_t uptime = (time_t) 0;
         FILE *fp = fopen("/proc/uptime", "r");
         if (fp != NULL)
         {
@@ -58,6 +58,8 @@ time_t OS::getUptime() {
                 }
 
                 fclose (fp);
+        } else {
+                throw "Could not open '/proc/uptime' for reading";
         }
 
         return uptime;
