@@ -12,14 +12,16 @@
    - Boost 1.55
 
 ** Building and installation
-   The project can be built using =scons= tool:
+   The project can be built as the follows:
 #+BEGIN_EXAMPLE
-$ scons iotivity-path=/path/to/iotivity-distribution
+$ autoreconf -vif
+$ ./configure --with-iotivitydir=/path/to/iotivity-0.9.2
+$ make
 #+END_EXAMPLE
 
    Installation can be done as follows:
 #+BEGIN_EXAMPLE
-$ scons install
+$ make install
 #+END_EXAMPLE
 
 ** Configuration
