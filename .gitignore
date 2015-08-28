@@ -3,3 +3,16 @@
 
 # Temporary files
 *\~
+
+# Generated Makefiles
+
+
+# Autotools generated and auxiliary files
+aclocal.m4
+configure
+config.log
+config.status
+Makefile
+Makefile.in
+
+autom4te.cache
