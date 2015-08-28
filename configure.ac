@@ -47,7 +47,7 @@ AC_ARG_WITH([iotivitydir],
 
 AC_SUBST([iotivitydir])
 
-AC_CONFIG_FILES([Makefile src/Makefile build-aux/Makefile])
+AC_CONFIG_FILES([Makefile etc/Makefile src/Makefile build-aux/Makefile])
 
 # Generate a Makefile, based on the results.
 AC_OUTPUT

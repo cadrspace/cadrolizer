@@ -17,8 +17,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with cadroizer.  If not, see <http://www.gnu.org/licenses/>.
 
-ACLOCAL_AMFLAGS = -I build-aux
-
-SUBDIRS = src build-aux etc
+sysconf_DATA = \
+	cadrolizer.conf
 
 ## Makefile.am ends here
