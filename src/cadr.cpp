@@ -174,10 +174,12 @@ void onGet(const string               id,
 
         if (rep.hasAttribute("services")) {
                 string services = rep.getValue<string>("services");
-                if (rep.hasAttribute("hostname"))
-                        replace_all_x(services, "<host>", hostname);
-                color_print(GREEN, "Services:\n");
-                print_list(services);
+                if (services.length()) {
+                        if (rep.hasAttribute("hostname"))
+                                replace_all_x(services, "<host>", hostname);
+                        color_print(GREEN, "Services:\n");
+                        print_list(services);
+                }
         }
 
         if (rep.hasAttribute("shutdown-allowed?")) {
