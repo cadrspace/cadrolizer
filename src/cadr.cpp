@@ -123,14 +123,14 @@ void print_list(const string list)
 }
 
 /* Print information about the found resource. */
-void onGet(const string               id,
-           const HeaderOptions        &headerOptions,
-           const OCRepresentation     &rep,
-           const int                  eCode)
+void on_get(const string               id,
+            const HeaderOptions        &headerOptions,
+            const OCRepresentation     &rep,
+            const int                  eCode)
 {
         string hostname;
 
-        DEBUG("onGet: Called\n");
+        DEBUG("on_get: Called\n");
         if (! (eCode == SUCCESS_RESPONSE))
                 return;
 
@@ -139,8 +139,8 @@ void onGet(const string               id,
 
         if (rep.hasAttribute("name")) {
                 string name = rep.getValue<string>("name");
-                DEBUG("onGet: name: %s\n", name.c_str());
-                DEBUG("onGet: hasAttribute\n");
+                DEBUG("on_get: name: %s\n", name.c_str());
+                DEBUG("on_get: hasAttribute\n");
         }
 
         if (rep.hasAttribute("hostname")) {
@@ -227,7 +227,7 @@ void foundResource(shared_ptr<OCResource> resource)
         QueryParamsMap test;
         ostringstream id;
         id << resource->uniqueIdentifier();
-        GetCallback cb = bind(onGet, id.str(), PH::_1, PH::_2, PH::_3);
+        GetCallback cb = bind(on_get, id.str(), PH::_1, PH::_2, PH::_3);
         resource->get(test, cb);
 }
 
