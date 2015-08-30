@@ -132,7 +132,8 @@ void OS::shutdown()
 {
         syslog(LOG_INFO, "shutdown");
         sync();
-        system("shutdown -h -P now");
+        if (system("shutdown -h -P now") != 0)
+                throw "An error occured during executing of a command";
 }
 
 /**
@@ -142,7 +143,8 @@ void OS::reboot()
 {
         syslog(LOG_INFO, "reboot");
         sync();
-        system("shutdown -r now");
+        if (system("shutdown -r now") != 0)
+                throw "An error occured during executing of a command";
 }
 
 /* os.cpp ends here. */
